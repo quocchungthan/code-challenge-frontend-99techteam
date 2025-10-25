@@ -6,6 +6,7 @@ interface WalletBalance {
 interface FormattedWalletBalance {
   currency: string;
   amount: number;
+// REVIEW: name is not clear, which value got formatted here?
   formatted: string;
 }
 

@@ -67,7 +67,7 @@ interface WalletBalance {
   amount: number;
 }
 interface FormattedWalletBalance extends WalletBalance {
-  formatted: string;
+  formattedAmount: string;
 }
 
 interface Props extends BoxProps {
@@ -95,7 +95,7 @@ const WalletPage: React.FC<Props> = (props: Props) => {
   const formattedSortedBalances = useMemo(() => sortedBalances.map((balance: WalletBalance) => {
     return {
       ...balance,
-      formatted: balance.amount.toFixed()
+      formattedAmount: balance.amount.toFixed()
     } as FormattedWalletBalance
   }), [sortedBalances]);
 
@@ -108,7 +108,7 @@ const WalletPage: React.FC<Props> = (props: Props) => {
                 key={formattedBalance.currency}
                 amount={formattedBalance.amount}
                 usdValue={usdValue}
-                formattedAmount={formattedBalance.formatted}
+                formattedAmount={formattedBalance.formattedAmount}
             />)});
   }, [formattedSortedBalances, classes]);
 
