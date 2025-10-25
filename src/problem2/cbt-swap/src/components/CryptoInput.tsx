@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { calculateUsdValue, validateSwapAmount } from '../utils/calculation.helpers';
 
 interface CryptoInputProps {
   label: string;
@@ -24,10 +25,17 @@ export const CryptoInput = ({
   usdValue,
   disabled = false
 }: CryptoInputProps) => {
-  const formattedUsdValue = useMemo(() => {
-    if (!usdValue || !amount || isNaN(parseFloat(amount))) return '$0.00';
-    return `$${(parseFloat(amount) * usdValue).toFixed(2)}`;
-  }, [amount, usdValue]);
+  const [error, setError] = useState<string | null>(null);
+
+  const formattedUsdValue = useMemo(
+    () => calculateUsdValue(amount, usdValue),
+    [amount, usdValue]
+  );
+
+  // Reactive validation — updates as user types
+  useEffect(() => {
+    setError(validateSwapAmount(amount, balance));
+  }, [amount, balance]);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

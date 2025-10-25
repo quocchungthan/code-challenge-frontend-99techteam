@@ -4,6 +4,7 @@ import { CryptoInput } from './CryptoInput';
 import { useBalance } from '../hooks/useBalance';
 import { useCryptoPrices } from '../hooks/usePrices';
 import { CRYPTOS } from '../configurable-constants/cryptos';
+import { calculateSwapAmount } from '../utils/calculation.helpers';
 
 export const SwapForm = () => {
   const [fromAmount, setFromAmount] = useState('');
@@ -33,31 +34,20 @@ export const SwapForm = () => {
 
   const handleFromAmountChange = useCallback((value: string) => {
     setFromAmount(value);
-    if (value && prices[fromCrypto] && prices[toCrypto]) {
-      const fromValue = parseFloat(value) * prices[fromCrypto];
-      const toValue = fromValue / prices[toCrypto];
-      setToAmount(toValue.toFixed(6));
-    } else {
-      setToAmount('');
-    }
+    const newToAmount = calculateSwapAmount(value, prices[fromCrypto], prices[toCrypto]);
+    setToAmount(newToAmount);
   }, [fromCrypto, toCrypto, prices]);
 
   const handleFromCryptoChange = useCallback((crypto: string) => {
     setFromCrypto(crypto);
-    if (fromAmount && prices[crypto] && prices[toCrypto]) {
-      const fromValue = parseFloat(fromAmount) * prices[crypto];
-      const toValue = fromValue / prices[toCrypto];
-      setToAmount(toValue.toFixed(6));
-    }
+    const newToAmount = calculateSwapAmount(fromAmount, prices[crypto], prices[toCrypto]);
+    setToAmount(newToAmount);
   }, [fromAmount, toCrypto, prices]);
 
   const handleToCryptoChange = useCallback((crypto: string) => {
     setToCrypto(crypto);
-    if (fromAmount && prices[fromCrypto] && prices[crypto]) {
-      const fromValue = parseFloat(fromAmount) * prices[fromCrypto];
-      const toValue = fromValue / prices[crypto];
-      setToAmount(toValue.toFixed(6));
-    }
+    const newToAmount = calculateSwapAmount(fromAmount, prices[fromCrypto], prices[crypto]);
+    setToAmount(newToAmount);
   }, [fromAmount, fromCrypto, prices]);
 
   const handleSwap = useCallback(() => {
@@ -97,7 +87,7 @@ export const SwapForm = () => {
         <div className="flex justify-center -my-2 relative z-10">
           <button
             onClick={handleSwapPositions}
-            className="bg-white border-4 cursor-pointer  border-gray-50 rounded-full p-2 hover:bg-gray-100 transition-colors"
+            className="bg-white border-4 cursor-pointer border-gray-50 rounded-full p-2 hover:bg-gray-100 transition-colors"
             disabled={isLoading}
           >
             <ArrowDownUp className="w-5 h-5 text-gray-600" />
