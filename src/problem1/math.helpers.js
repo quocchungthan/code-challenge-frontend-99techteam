@@ -7,9 +7,9 @@
  * Or copy this code and paste it into the Console/Snippets in the browser
  */
 
-// Complexity of the approach: O(1)
+// Complexity of the approach: O(n) - recursive call
 const sum_to_n_a = function (n) {
-  return (n * (n + 1)) / 2;
+  return n === 0 ? 0 : sum_to_n_a(n - 1) + n;
 };
 
 // Complexity of the approach: O(n)
