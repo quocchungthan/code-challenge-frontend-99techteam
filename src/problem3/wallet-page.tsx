@@ -2,6 +2,7 @@ interface WalletBalance {
   currency: string;
   amount: number;
 }
+// REVIEW: duplicate props with WalletBalance
 interface FormattedWalletBalance {
   currency: string;
   amount: number;
