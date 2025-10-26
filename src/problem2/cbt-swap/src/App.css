@@ -1,0 +1,29 @@
+.app-bg {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+
+  /* Smooth gradient background */
+  background: linear-gradient(to bottom right, #cbdcf2, #cfd3df);
+
+  /* SVG pattern */
+  background-image: url('/bg-icon.svg');
+  background-repeat: repeat;
+  background-size: 120px 120px; /* smaller size = tighter pattern; increase to make icons larger */
+  background-position: center;
+
+  /* Make sure it covers entire viewport */
+  background-attachment: fixed;
+}
+
+/* Soft inner shadow overlay */
+.app-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+}

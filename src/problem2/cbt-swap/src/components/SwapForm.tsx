@@ -137,7 +137,7 @@ export const SwapForm = () => {
             <button
                 onClick={handleSwap}
                 disabled={isLoading || !fromAmount || parseFloat(fromAmount) <= 0}
-                className="cursor-pointer w-full mt-6 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-lg transition-colors"
+                className="cursor-pointer w-full mt-6 bg-amber-800 hover:bg-amber-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-lg transition-colors"
             >
                 {isLoading ? 'Loading...' : 'Swap'}
             </button>
