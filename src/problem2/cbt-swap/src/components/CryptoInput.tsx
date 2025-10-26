@@ -12,6 +12,7 @@ interface CryptoInputProps {
   balance?: number;
   usdValue?: number;
   disabled?: boolean;
+  validate?: boolean;
 }
 
 export const CryptoInput = ({
@@ -24,6 +25,7 @@ export const CryptoInput = ({
   balance = 0,
   usdValue,
   disabled = false,
+  validate
 }: CryptoInputProps) => {
   const [error, setError] = useState<string | null>(null);
   const [isDirty, setIsDirty] = useState(false);
@@ -33,10 +35,16 @@ export const CryptoInput = ({
     [amount, usdValue]
   );
 
-  useEffect(() => {
-    const validationError = validateSwapAmount(amount, balance);
-    setError(validationError);
-  }, [amount, balance]);
+    useEffect(() => {
+        if (!validate) {
+            setError(null); // skip validation for "To"
+            return;
+        }
+
+        const validationError = validateSwapAmount(amount, balance);
+        setError(validationError);
+    }, [amount, balance, validate]);
+
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
