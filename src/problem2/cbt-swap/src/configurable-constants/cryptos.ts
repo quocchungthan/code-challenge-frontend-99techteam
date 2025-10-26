@@ -1,5 +1,5 @@
 // I assume my CBT Swap only handle these coins.
-export const CRYPTOS = ['WBTC', 'ETH', 'USDC', 'SOL', 'BUSD', 'ATOM', 'ZIL', 'LUNA', 'GMX'];
+export const CRYPTOS = ['WBTC', 'ETH', 'USDC', 'BUSD', 'ATOM', 'ZIL', 'LUNA', 'GMX'];
 
 // Fake my balance, actually I'm not this rich.
 export const FAKE_BALANCE: Record<typeof CRYPTOS[number], number> = {
