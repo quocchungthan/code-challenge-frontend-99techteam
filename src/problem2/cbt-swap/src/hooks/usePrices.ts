@@ -19,8 +19,6 @@ export const useCryptoPrices = () => {
         return acc;
       }, {} as Prices);
 
-      setPrices(flatMapPrices);
-
       setLoading(false);
     };
 

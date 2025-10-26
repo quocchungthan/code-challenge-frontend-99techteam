@@ -25,8 +25,8 @@ export const fetchCryptoPrices = (): Promise<PriceResponseItem[]> => {
                         lastInflationRate[item.currency] = 0;
                     }
 
-                    lastInflationRate[item.currency] *= (Math.random() * 1 - 0.5);
-                    item.price *= lastInflationRate[item.currency];
+                    lastInflationRate[item.currency] += (Math.random() * 0.1 - 0.05);
+                    item.price += item.price * Math.min(Math.max(lastInflationRate[item.currency], -0.99), 0.99);
 
                     return item;
                 });

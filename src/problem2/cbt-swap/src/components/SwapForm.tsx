@@ -36,7 +36,13 @@ export const SwapForm = () => {
     setFromAmount(value);
     const newToAmount = calculateSwapAmount(value, prices[fromCrypto], prices[toCrypto]);
     setToAmount(newToAmount);
-  }, [fromCrypto, toCrypto, prices]);
+  }, [fromCrypto, toCrypto, prices, setToAmount, setFromAmount]);
+
+  const handleToAmountChange = useCallback((value: string) => {
+    setToAmount(value);
+    const newFromAmount = calculateSwapAmount(value, prices[toCrypto], prices[fromCrypto]);
+    setFromAmount(newFromAmount);
+  }, [fromCrypto, toCrypto, prices, setToAmount, setFromAmount]);
 
   const handleFromCryptoChange = useCallback((crypto: string) => {
     setFromCrypto(crypto);
@@ -97,13 +103,13 @@ export const SwapForm = () => {
         <CryptoInput
           label="To"
           amount={toAmount}
-          onAmountChange={setToAmount}
+          onAmountChange={handleToAmountChange}
           selectedCrypto={toCrypto}
           onCryptoChange={handleToCryptoChange}
           availableCryptos={availableToCryptos}
           balance={balances[toCrypto]}
           usdValue={prices[toCrypto]}
-          disabled={true}
+          disabled={false}
         />
       </div>
 

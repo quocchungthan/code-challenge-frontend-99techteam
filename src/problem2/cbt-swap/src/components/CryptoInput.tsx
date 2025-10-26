@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from 'react';
-import { ChevronDown } from 'lucide-react';
 import { calculateUsdValue, validateSwapAmount } from '../utils/calculation.helpers';
+import { CryptoSelect } from './CryptoSelect';
 
 interface CryptoInputProps {
   label: string;
@@ -21,7 +21,7 @@ export const CryptoInput = ({
   selectedCrypto,
   onCryptoChange,
   availableCryptos,
-  balance,
+  balance = 0,
   usdValue,
   disabled = false
 }: CryptoInputProps) => {
@@ -32,7 +32,6 @@ export const CryptoInput = ({
     [amount, usdValue]
   );
 
-  // Reactive validation — updates as user types
   useEffect(() => {
     setError(validateSwapAmount(amount, balance));
   }, [amount, balance]);
@@ -70,21 +69,15 @@ export const CryptoInput = ({
           </div>
         </div>
 
-        <div className="relative">
-          <select
-            value={selectedCrypto}
-            onChange={(e) => onCryptoChange(e.target.value)}
-            className="appearance-none bg-gray-100 hover:bg-gray-200 rounded-lg px-4 py-2 pr-10 font-semibold cursor-pointer outline-none transition-colors"
-          >
-            {availableCryptos.map((crypto) => (
-              <option key={crypto} value={crypto}>
-                {crypto}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="absolute right-3 top-2/5 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
-        </div>
+        <CryptoSelect
+          value={selectedCrypto}
+          onChange={onCryptoChange}
+          options={availableCryptos}
+          disabled={disabled}
+        />
       </div>
+
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
   );
 };
