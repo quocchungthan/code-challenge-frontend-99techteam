@@ -3,8 +3,9 @@ import { ArrowDownUp } from 'lucide-react';
 import { CryptoInput } from './CryptoInput';
 import { useBalance } from '../hooks/useBalance';
 import { useCryptoPrices } from '../hooks/usePrices';
-import { CRYPTOS } from '../configurable-constants/cryptos';
-import { calculateSwapAmount } from '../utils/calculation.helpers';
+import { CRYPTOS, FAKE_SWAPPING_FEE } from '../configurable-constants/cryptos';
+import { calculateSwapAmount, calculateSwapFee } from '../utils/calculation.helpers';
+import { SwapDetailsCollapse } from './SwapDetailCollapse';
 
 export const SwapForm = () => {
   const [fromAmount, setFromAmount] = useState('');
@@ -68,7 +69,7 @@ export const SwapForm = () => {
       return;
     }
 
-    alert(`Swapping ${fromAmount} ${fromCrypto} for ${toAmount} ${toCrypto}`);
+    alert(`Swapping ${fromAmount} ${fromCrypto} for ${calculateSwapFee(toAmount, FAKE_SWAPPING_FEE).receivedAfterFee} ${toCrypto}`);
   }, [fromAmount, toAmount, fromCrypto, toCrypto, balances]);
 
   const isLoading = balancesLoading || pricesLoading;
@@ -113,6 +114,13 @@ export const SwapForm = () => {
         />
       </div>
 
+    <SwapDetailsCollapse
+    fromAmount={fromAmount}
+    fromCrypto={fromCrypto}
+    toAmount={toAmount}
+    toCrypto={toCrypto}
+    feePercent={FAKE_SWAPPING_FEE}
+    />
       <button
         onClick={handleSwap}
         disabled={isLoading || !fromAmount || parseFloat(fromAmount) <= 0}

@@ -34,3 +34,16 @@ export const validateSwapAmount = (
   if (balance !== undefined && parsed > balance) return 'Insufficient balance';
   return null;
 };
+
+/**
+ * Calculates the fee and final amount received after applying a fee percentage.
+ */
+export const calculateSwapFee = (
+  toAmount: string,
+  feePercent: number
+): { feeAmount: number; receivedAfterFee: number } => {
+  const toAmt = parseFloat(toAmount) || 0;
+  const fee = toAmt * feePercent;
+  const received = toAmt - fee;
+  return { feeAmount: fee, receivedAfterFee: received };
+};

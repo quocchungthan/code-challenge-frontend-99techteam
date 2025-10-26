@@ -23,9 +23,10 @@ export const CryptoInput = ({
   availableCryptos,
   balance = 0,
   usdValue,
-  disabled = false
+  disabled = false,
 }: CryptoInputProps) => {
   const [error, setError] = useState<string | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
 
   const formattedUsdValue = useMemo(
     () => calculateUsdValue(amount, usdValue),
@@ -33,13 +34,21 @@ export const CryptoInput = ({
   );
 
   useEffect(() => {
-    setError(validateSwapAmount(amount, balance));
+    const validationError = validateSwapAmount(amount, balance);
+    setError(validationError);
   }, [amount, balance]);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value === '' || /^\d*\.?\d*$/.test(value)) {
       onAmountChange(value);
+      if (!isDirty) setIsDirty(true); // 👈 mark as dirty once user types
+    }
+  };
+
+  const handleBlur = () => {
+    if (!isDirty && amount.trim() !== '') {
+      setIsDirty(true); // 👈 also mark dirty when field loses focus
     }
   };
 
@@ -60,6 +69,7 @@ export const CryptoInput = ({
             type="text"
             value={amount}
             onChange={handleAmountChange}
+            onBlur={handleBlur}
             disabled={disabled}
             placeholder="0.0"
             className="w-full text-2xl font-semibold bg-transparent outline-none disabled:opacity-50"
@@ -77,7 +87,7 @@ export const CryptoInput = ({
         />
       </div>
 
-      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+      {isDirty && error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
   );
 };
